@@ -1,5 +1,6 @@
 import cv2
-import face_recognition
+import dlib
+#import face_recognition
 
 from clams.serve import ClamApp
 from clams.serialize import *
@@ -43,13 +44,11 @@ class FaceDetection(ClamApp):
 
     @staticmethod
     def run_FD(video_filename, mmif): # mmif here will be used for filtering out frames/
-        #apply tesseract ocr to frames
-        sample_ratio = 60
+        cnn_face_detector = dlib.cnn_face_detection_model_v1("mmod_human_face_detector.dat")
+        sample_ratio = 30
         result = []
         def process_image(f):
             proc = cv2.cvtColor(f, cv2.COLOR_BGR2RGB)
-            # proc = cv2.threshold(proc, 0, 255,
-            #                      cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
             proc = cv2.medianBlur(proc, 5)
             return proc
 
@@ -62,7 +61,10 @@ class FaceDetection(ClamApp):
                 break
             if counter % sample_ratio == 0:
                 processed_frame = process_image(f)
-                boxes = face_recognition.face_locations(f)
+                res = cnn_face_detector(processed_frame)
+                boxes = []
+                for face in res:
+                    boxes.append((face.rect.top(), face.rect.left(), face.rect.bottom(), face.rect.right()))
                 if len(boxes) > 0:
                     result.append((counter, boxes))
             counter += 1
