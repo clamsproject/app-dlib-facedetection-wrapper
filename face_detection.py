@@ -23,10 +23,11 @@ class FaceDetection(ClamApp):
         # this mock-up method always returns true
         return True
 
-    def annotate(self, mmif_json):
-        mmif = Mmif(mmif_json)
+    def annotate(self, mmif):
+        if not type(mmif) is Mmif:
+            mmif = Mmif(mmif)
         video_filename = mmif.get_medium_location(MediaTypes.V)
-        face_output = self.run_FD(video_filename, mmif_json) #FD output is a list of (frame number, [(x1, y1, x2, y2),...]) pairs
+        face_output = self.run_FD(video_filename, mmif) #FD output is a list of (frame number, [(x1, y1, x2, y2),...]) pairs
         new_view = mmif.new_view()
         contain = new_view.new_contain(AnnotationTypes.FACE)
         contain.producer = self.__class__
