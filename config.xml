@@ -1,0 +1,13 @@
+<tool id="dlib-face" name="DLib Face Detection" version="0.0.1">
+  <description>
+    Detect faces using the dlib face detection model.
+  </description>
+  <command interpreter="python3">test.py $input $output</command>
+  <inputs>
+      <param name="input" type="data" format="json" label="M.Video"/>
+  </inputs>
+  <outputs>
+    <data name="output" format="json" label="Faces"/>
+  </outputs>
+  <help>Video</help>
+</tool>
