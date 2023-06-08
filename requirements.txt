@@ -1,6 +1,6 @@
 opencv-python
 dlib==19.16.0
-Flask==1.0.2
+Flask==2.3.2
 Flask-DebugToolbar==0.10.1
 Flask-RESTful==0.3.7
 Flask-WTF==0.14.2
